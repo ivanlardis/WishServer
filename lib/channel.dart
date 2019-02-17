@@ -1,3 +1,5 @@
+import 'package:wish_server/WishController.dart';
+
 import 'wish_server.dart';
 
 /// This type initializes an application.
@@ -11,9 +13,17 @@ class WishServerChannel extends ApplicationChannel {
   /// and any other initialization required before constructing [entryPoint].
   ///
   /// This method is invoked prior to [entryPoint] being accessed.
+
+  ManagedContext context;
   @override
   Future prepare() async {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+
+    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
+    final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
+        "wishes_user", "password", "localhost", 5432, "wishes");
+
+    context = ManagedContext(dataModel, persistentStore);
   }
 
   /// Construct the request channel.
@@ -26,8 +36,12 @@ class WishServerChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    // Prefer to use `link` instead of `linkFunction`.
-    // See: https://aqueduct.io/docs/http/request_controller/
+
+    router
+        .route("/wish")
+        .link(() => WishController(context));
+
+
     router
       .route("/example")
       .linkFunction((request) async {
@@ -36,4 +50,6 @@ class WishServerChannel extends ApplicationChannel {
 
     return router;
   }
+
+
 }
