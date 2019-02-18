@@ -1,4 +1,5 @@
 import 'package:wish_server/WishController.dart';
+import 'package:wish_server/WishInfoController.dart';
 
 import 'wish_server.dart';
 
@@ -19,9 +20,15 @@ class WishServerChannel extends ApplicationChannel {
   Future prepare() async {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
+    final config = AppConfig(options.configurationFilePath);
     final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
-        "wishes_user", "password", "localhost", 5432, "wishes");
+
+        config.database.username,
+        config.database.password,
+        config.database.host,
+        config.database.port,
+        config.database.databaseName);
 
     context = ManagedContext(dataModel, persistentStore);
   }
@@ -41,6 +48,9 @@ class WishServerChannel extends ApplicationChannel {
         .route("/wish")
         .link(() => WishController(context));
 
+    router
+        .route("/wishinfo")
+        .link(() => WishInfoController(context));
 
     router
       .route("/example")
@@ -52,4 +62,9 @@ class WishServerChannel extends ApplicationChannel {
   }
 
 
+}
+class AppConfig extends Configuration {
+  AppConfig(String path): super.fromFile(File(path));
+
+  DatabaseConfiguration database;
 }
