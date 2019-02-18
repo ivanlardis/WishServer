@@ -10,4 +10,6 @@ class _Wish {
   int value;
 
   int time;
+
+  int timeAfterLastPress;
 }

@@ -10,30 +10,28 @@ class WishController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAllHeroes() async {
+
+    print("get my");
     final wishQuery = Query<Wish>(context);
     final wishes = await wishQuery.fetch();
     return Response.ok(wishes);
   }
+
   @Operation.post()
   Future<Response> createHero() async {
+    print("post my");
     final Map<String, dynamic> body = await request.body.decode();
+    print("post my1");
+    print(body);
     final query = Query<Wish>(context)
       ..values.value = body['value'] as int
-      ..values.time = body['time'] as int;
+      ..values.time = body['time'] as int
+      ..values.timeAfterLastPress = body['timeAfterLastPress'] as int;
 
     final insertedHero = await query.insert();
 
     return Response.ok(insertedHero);
   }
-//  @Operation.get('id')
-//  Future<Response> getHeroByID(@Bind.path('id') int id) async {
-//    final hero = _heroes.firstWhere((hero) => hero['id'] == id, orElse: () => null);
-//
-//    if (hero == null) {
-//      return Response.notFound();
-//    }
-//
-//    return Response.ok(hero);
-//  }
+
 
 }

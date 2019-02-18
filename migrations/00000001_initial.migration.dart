@@ -1,45 +1,16 @@
 import 'dart:async';
-import 'package:aqueduct/aqueduct.dart';
+import 'package:aqueduct/aqueduct.dart';   
 
-class Migration1 extends Migration {
+class Migration1 extends Migration { 
   @override
   Future upgrade() async {
-    database.createTable(SchemaTable("_Wish", [
-      SchemaColumn("id", ManagedPropertyType.bigInteger,
-          isPrimaryKey: true,
-          autoincrement: true,
-          isIndexed: false,
-          isNullable: false,
-          isUnique: false),
-      SchemaColumn("value", ManagedPropertyType.integer,
-          isPrimaryKey: false,
-          autoincrement: false,
-          isIndexed: false,
-          isNullable: false,
-          isUnique: false),
-      SchemaColumn("time", ManagedPropertyType.integer,
-          isPrimaryKey: false,
-          autoincrement: false,
-          isIndexed: false,
-          isNullable: false,
-          isUnique: false)
-    ]));
+   		database.createTable(SchemaTable("_Wish", [SchemaColumn("id", ManagedPropertyType.bigInteger, isPrimaryKey: true, autoincrement: true, isIndexed: false, isNullable: false, isUnique: false),SchemaColumn("value", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, isIndexed: false, isNullable: false, isUnique: false),SchemaColumn("time", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, isIndexed: false, isNullable: false, isUnique: false),SchemaColumn("timeAfterLastPress", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, isIndexed: false, isNullable: false, isUnique: false)]));
   }
-
+  
   @override
   Future downgrade() async {}
-
+  
   @override
-  Future seed() async {
-
-
-    await database.store.execute("INSERT INTO _Wish (value,time) VALUES (1,1)",substitutionValues:{});
-    await database.store.execute("INSERT INTO _Wish (value,time) VALUES (1,2)",substitutionValues:{});
-    await database.store.execute("INSERT INTO _Wish (value,time) VALUES (1,3)",substitutionValues:{});
-    await database.store.execute("INSERT INTO _Wish (value,time) VALUES (1,4)",substitutionValues:{});
-    await database.store.execute("INSERT INTO _Wish (value,time) VALUES (1,5)",substitutionValues:{});
-    await database.store.execute("INSERT INTO _Wish (value,time) VALUES (1,6)",substitutionValues:{});
-
-
-  }
+  Future seed() async {}
 }
+    
