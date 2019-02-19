@@ -48,10 +48,10 @@ class WishServerChannel extends ApplicationChannel {
         .route("/wish")
         .link(() => WishController(context));
 
-//    router
-//        .route("/wishinfo")
-//        .link(() => WishInfoController(context));
-//
+    router
+        .route("/wishinfo")
+        .link(() => WishInfoController(context));
+
 //    router
 //      .route("/example")
 //      .linkFunction((request) async {

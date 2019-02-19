@@ -1,9 +1,7 @@
 import 'package:aqueduct/aqueduct.dart';
 import 'package:wish_server/persistence/DBModels.dart';
 
-
 class WishController extends ResourceController {
-
   WishController(this.context);
 
   final ManagedContext context;
@@ -11,27 +9,62 @@ class WishController extends ResourceController {
   @Operation.get()
   Future<Response> getAllHeroes() async {
 
-    print("get my");
-    final wishQuery = Query<Wish>(context);
-    final wishes = await wishQuery.fetch();
-    return Response.ok(wishes);
+
+    var userId = 11;
+    final wishQuery = Query<Wish>(context)
+      ..where((h) => h.userId).equalTo(userId);
+
+    var wish = await wishQuery.fetchOne();
+
+    if (wish == null) {
+      final query = Query<Wish>(context)
+        ..values.countCons = 0
+        ..values.countProps = 0
+        ..values.userId = userId
+        ..values.timeAfterLastPress = 0
+        ..canModifyAllInstances = true;
+      wish = await query.insert();
+    }
+
+    return Response.ok(wish);
   }
 
   @Operation.post()
   Future<Response> createHero() async {
-    print("post my");
+
     final Map<String, dynamic> body = await request.body.decode();
-    print("post my1");
+
     print(body);
-    final query = Query<Wish>(context)
-      ..values.value = body['value'] as int
-      ..values.time = body['time'] as int
-      ..values.timeAfterLastPress = body['timeAfterLastPress'] as int;
 
-    final insertedHero = await query.insert();
+    var userId = 11;
 
-    return Response.ok(insertedHero);
+    final wishQuery = Query<Wish>(context)
+      ..where((h) => h.userId).equalTo(userId);
+
+    final wish = await wishQuery.fetchOne();
+
+    if (wish == null) {
+      print("wish == null");
+      final query = Query<Wish>(context)
+        ..values.countCons = body['countCons'] as int
+        ..values.countProps = body['countProps'] as int
+        ..values.userId = userId
+        ..values.timeAfterLastPress = body['timeAfterLastPress'] as int
+        ..canModifyAllInstances = true;
+      final insertedHero = await query.insert();
+      return Response.ok(insertedHero);
+    } else {
+
+      print("wish != null");
+      final query = Query<Wish>(context)
+        ..where((h) => h.userId).equalTo(userId)
+        ..values.countCons = body['countCons'] as int
+        ..values.countProps = body['countProps'] as int
+        ..values.userId = userId
+        ..values.timeAfterLastPress = body['timeAfterLastPress'] as int
+        ..canModifyAllInstances = true;
+      final insertedHero = await query.update();
+      return Response.ok(insertedHero);
+    }
   }
-
-
 }
