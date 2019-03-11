@@ -1,21 +1,18 @@
-# wish_server
+ aqueduct db generate
+ 
+ pub global activate aqueduct
+ 
+ aqueduct db upgrade —connect postgres://wishes_user:password@localhost:5432/wishes
+ 
+ 
+ CREATE DATABASE wishes;
+ CREATE USER wishes_user WITH createdb;
+ ALTER USER wishes_user WITH password 'password';
+ GRANT all ON database wishes TO wishes_user; 
+ 
+  aqueduct serve
 
-## Running the Application Locally
 
-Run `aqueduct serve` from this directory to run the application. For running within an IDE, run `bin/main.dart`. By default, a configuration file named `config.yaml` will be used.
+curl -X POST http://localhost:8888/register -H 'Content-Type: application/json' -d '{"username":"bob", "password":"password"}'
 
-To generate a SwaggerUI client, run `aqueduct document client`.
-
-## Running Application Tests
-
-To run all tests for this application, run the following in this directory:
-
-```
-pub run test
-```
-
-The default configuration file used when testing is `config.src.yaml`. This file should be checked into version control. It also the template for configuration files used in deployment.
-
-## Deploying an Application
-
-See the documentation for [Deployment](https://aqueduct.io/docs/deploy/).
+aqueduct auth add-client --id com.lardis.wish --connect postgres://wishes_user:password@localhost:5432/wishes

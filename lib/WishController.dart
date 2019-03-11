@@ -1,5 +1,5 @@
 import 'package:aqueduct/aqueduct.dart';
-import 'package:wish_server/persistence/DBModels.dart';
+import 'package:wish_server/model/Wish.dart';
 
 class WishController extends ResourceController {
   WishController(this.context);

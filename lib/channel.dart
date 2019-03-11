@@ -1,7 +1,10 @@
 import 'package:wish_server/WishController.dart';
 import 'package:wish_server/WishInfoController.dart';
+import 'package:wish_server/controller/RegisterController.dart';
+import 'package:wish_server/model/User.dart';
 
 import 'wish_server.dart';
+import 'package:aqueduct/managed_auth.dart';
 
 /// This type initializes an application.
 ///
@@ -14,6 +17,7 @@ class WishServerChannel extends ApplicationChannel {
   /// and any other initialization required before constructing [entryPoint].
   ///
   /// This method is invoked prior to [entryPoint] being accessed.
+  AuthServer authServer;
 
   ManagedContext context;
   @override
@@ -31,6 +35,9 @@ class WishServerChannel extends ApplicationChannel {
         config.database.databaseName);
 
     context = ManagedContext(dataModel, persistentStore);
+
+    final authStorage = ManagedAuthDelegate<User>(context);
+    authServer = AuthServer(authStorage);
   }
 
   /// Construct the request channel.
@@ -52,12 +59,13 @@ class WishServerChannel extends ApplicationChannel {
         .route("/wishinfo")
         .link(() => WishInfoController(context));
 
-//    router
-//      .route("/example")
-//      .linkFunction((request) async {
-//        return Response.ok({"key": "value"});
-//      });
+    router
+        .route('/register')
+        .link(() => RegisterController(context, authServer));
 
+    router
+        .route('/auth/token')
+        .link(() => AuthController(authServer));
     return router;
   }
 
