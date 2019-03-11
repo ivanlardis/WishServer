@@ -17,3 +17,5 @@ class _Wish {
 
   int timeAfterLastPress;
 }
+
+

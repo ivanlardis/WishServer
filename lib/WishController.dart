@@ -8,9 +8,8 @@ class WishController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAllHeroes() async {
+    final userId = request.authorization.ownerID;
 
-
-    var userId = 11;
     final wishQuery = Query<Wish>(context)
       ..where((h) => h.userId).equalTo(userId);
 
@@ -31,12 +30,11 @@ class WishController extends ResourceController {
 
   @Operation.post()
   Future<Response> createHero() async {
-
+    final userId = request.authorization.ownerID;
     final Map<String, dynamic> body = await request.body.decode();
 
     print(body);
 
-    var userId = 11;
 
     final wishQuery = Query<Wish>(context)
       ..where((h) => h.userId).equalTo(userId);
@@ -54,6 +52,14 @@ class WishController extends ResourceController {
       final insertedHero = await query.insert();
       return Response.ok(insertedHero);
     } else {
+      var timeAfterLastPress = wish.timeAfterLastPress;
+
+      if (body['timeAfterLastPress'] as int < timeAfterLastPress ||
+          timeAfterLastPress == 0
+      ) {
+        timeAfterLastPress = body['timeAfterLastPress'] as int;
+      }
+
 
       print("wish != null");
       final query = Query<Wish>(context)
@@ -61,7 +67,7 @@ class WishController extends ResourceController {
         ..values.countCons = body['countCons'] as int
         ..values.countProps = body['countProps'] as int
         ..values.userId = userId
-        ..values.timeAfterLastPress = body['timeAfterLastPress'] as int
+        ..values.timeAfterLastPress = timeAfterLastPress
         ..canModifyAllInstances = true;
       final insertedHero = await query.update();
       return Response.ok(insertedHero);

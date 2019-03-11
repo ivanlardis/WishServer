@@ -53,10 +53,12 @@ class WishServerChannel extends ApplicationChannel {
 
     router
         .route("/wish")
+        .link(() => Authorizer.bearer(authServer))
         .link(() => WishController(context));
 
     router
         .route("/wishinfo")
+        .link(() => Authorizer.bearer(authServer))
         .link(() => WishInfoController(context));
 
     router
