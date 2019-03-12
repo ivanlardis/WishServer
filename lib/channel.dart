@@ -1,6 +1,7 @@
-import 'package:wish_server/WishController.dart';
-import 'package:wish_server/WishInfoController.dart';
-import 'package:wish_server/WishOpenInfoController.dart';
+import 'package:wish_server/controller/CrashController.dart';
+import 'package:wish_server/controller/WishController.dart';
+import 'package:wish_server/controller/WishInfoController.dart';
+import 'package:wish_server/controller/WishOpenInfoController.dart';
 import 'package:wish_server/controller/RegisterController.dart';
 import 'package:wish_server/model/User.dart';
 
@@ -72,6 +73,10 @@ class WishServerChannel extends ApplicationChannel {
     router
         .route('/wishopeninfo')
         .link(() => WishOpenInfoController(context));
+
+    router
+        .route('/crash')
+        .link(() => CrashController(context));
 
     return router;
   }
