@@ -1,5 +1,6 @@
 import 'package:wish_server/WishController.dart';
 import 'package:wish_server/WishInfoController.dart';
+import 'package:wish_server/WishOpenInfoController.dart';
 import 'package:wish_server/controller/RegisterController.dart';
 import 'package:wish_server/model/User.dart';
 
@@ -50,7 +51,6 @@ class WishServerChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-
     router
         .route("/wish")
         .link(() => Authorizer.bearer(authServer))
@@ -68,13 +68,16 @@ class WishServerChannel extends ApplicationChannel {
     router
         .route('/auth/token')
         .link(() => AuthController(authServer));
+
+    router
+        .route('/wishopeninfo')
+        .link(() => WishOpenInfoController(context));
+
     return router;
   }
-
 
 }
 class AppConfig extends Configuration {
   AppConfig(String path): super.fromFile(File(path));
-
   DatabaseConfiguration database;
 }

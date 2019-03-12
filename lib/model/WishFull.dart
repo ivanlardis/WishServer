@@ -15,6 +15,10 @@ class WishFull {
         userName: json['userName'] as String);
   }
 
+  int getAllCountPressed(){
+    return countCons+countProps;
+  }
+
   Map<String, dynamic> toJson() => {
     'timeAfterLastPress': timeAfterLastPress,
     'countCons': countCons,
