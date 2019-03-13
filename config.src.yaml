@@ -1,0 +1,6 @@
+database:
+  host: 34.73.27.234:8888
+  port: 5432
+  username: wishes_user
+  password: password
+  databaseName: wishes
