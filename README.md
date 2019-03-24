@@ -37,3 +37,18 @@ sudo apt-get install postgresql postgresql-contrib
 sudo -i -u postgres
 psql
 \q
+
+
+database:
+  host: 34.73.27.234:8888
+  port: 5432
+  username: wishes_user
+  password: password
+  databaseName: wishes
+  
+  database:
+    host: http://34.73.27.234
+    port: 5432
+    username: wishes_user
+    password: password
+    databaseName: wishes

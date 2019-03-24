@@ -1,4 +1,6 @@
 import 'package:wish_server/controller/CrashController.dart';
+import 'package:wish_server/controller/PulseMetricController.dart';
+import 'package:wish_server/controller/UserDeviceController.dart';
 import 'package:wish_server/controller/WishController.dart';
 import 'package:wish_server/controller/WishInfoController.dart';
 import 'package:wish_server/controller/WishOpenInfoController.dart';
@@ -77,6 +79,13 @@ class WishServerChannel extends ApplicationChannel {
     router
         .route('/crash')
         .link(() => CrashController(context));
+
+    router
+        .route('/devices')
+        .link(() => UserDeviceController(context));
+  router
+        .route('/metric')
+        .link(() => PulseMetricController(context));
 
     return router;
   }

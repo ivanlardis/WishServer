@@ -1,5 +1,7 @@
 import 'package:aqueduct/aqueduct.dart';
+import 'package:wish_server/model/PulseMetric.dart';
 import 'package:wish_server/model/User.dart';
+import 'package:wish_server/model/UserDevice.dart';
 import 'package:wish_server/model/Wish.dart';
 import 'package:wish_server/model/WishFull.dart';
 import 'package:wish_server/model/WishInfo.dart';
@@ -12,7 +14,7 @@ class CrashController extends ResourceController {
 
   @Operation.get()
   Future<Response> getWishInfo() async {
-    if (request.toString().contains("papa")) {
+
 
       var query = Query<Wish>(context)
         ..where((u) => u.userId).notEqualTo(-1);
@@ -23,9 +25,17 @@ class CrashController extends ResourceController {
         ..where((u) => u.id).notEqualTo(-1);
 
       int usersDeleted = await query1.delete();
+
+
+      var query2 = Query<UserDevice>(context)
+        ..where((u) => u.id).notEqualTo(-1);
+
+      var query3 = Query<PulseMetric>(context)
+        ..where((u) => u.id).notEqualTo(-1);
+
+      int usersDeleted32 = await query3.delete();
+      int usersDeleted1 = await query2.delete();
       return Response.ok("OK");
-    } else {
-      return Response.badRequest();
-    }
+
   }
 }
