@@ -1,4 +1,5 @@
 import 'package:wish_server/controller/CrashController.dart';
+import 'package:wish_server/controller/OtBoxOverView.dart';
 import 'package:wish_server/controller/PulseMetricController.dart';
 import 'package:wish_server/controller/UserDeviceController.dart';
 import 'package:wish_server/controller/WishController.dart';
@@ -86,6 +87,9 @@ class WishServerChannel extends ApplicationChannel {
   router
         .route('/metric')
         .link(() => PulseMetricController(context));
+ router
+        .route('/overview')
+        .link(() => OtBoxOverView(context));
 
     return router;
   }

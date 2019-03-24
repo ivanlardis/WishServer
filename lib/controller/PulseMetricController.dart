@@ -20,6 +20,8 @@ class PulseMetricController extends ResourceController {
     return Response.ok(wish);
   }
 
+
+
   @Operation.post()
   Future<Response> createHero() async {
 
@@ -28,14 +30,51 @@ class PulseMetricController extends ResourceController {
     print(body);
 
 
+    final wishQuery = Query<PulseMetric>(context)
+      ..where((h) => h.mac).equalTo( body['mac'] as String);
 
+    final wish = await wishQuery.fetchOne();
+
+    if (wish == null) {
+      print("wish == null");
       final query = Query<PulseMetric>(context)
         ..values.mac = body['mac'] as String
+        ..values.min =body['pulse'] as int
+        ..values.max = body['pulse'] as int
         ..values.pulse = body['pulse'] as int
         ..values.time = DateTime.now().millisecondsSinceEpoch
         ..canModifyAllInstances = true;
       final insertedHero = await query.insert();
       return Response.ok(insertedHero);
+    } else {
 
+//
+//
+
+    var pulse =body['pulse'] as int;
+    var max =wish.max;
+
+    if(pulse > max){
+      max = pulse;
+    }
+    var min =wish.min;
+
+    if(pulse < min){
+      min = pulse;
+    }
+      final query = Query<PulseMetric>(context)
+        ..where((h) => h.id).equalTo(wish.id)
+        ..values.id = wish.id
+        ..values.min = min
+        ..values.max = max
+        ..values.mac = body['mac'] as String
+        ..values.pulse = body['pulse'] as int
+        ..values.time = DateTime.now().millisecondsSinceEpoch
+        ..canModifyAllInstances = true;
+
+
+      final insertedHero = await query.update();
+      return Response.ok(insertedHero);
+    }
   }
 }

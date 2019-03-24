@@ -3,7 +3,8 @@
  pub global activate aqueduct
  
  aqueduct db upgrade —connect postgres://wishes_user:password@localhost:5432/wishes
- 
+   aqueduct db generate
+
  
  CREATE DATABASE wishes;
  CREATE USER wishes_user WITH createdb;

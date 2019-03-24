@@ -8,6 +8,8 @@ class PulseMetric extends ManagedObject<_PulseMetric> implements _PulseMetric {
     'mac': mac,
     'time': time,
     'pulse': pulse,
+    'min': min,
+    'max': max,
 
   };
 }
@@ -26,6 +28,10 @@ class _PulseMetric{
   int time;
 
   int pulse;
+
+  int min;
+
+  int max;
 
 }
 
