@@ -25,7 +25,7 @@ class _PulseMetric{
 
   String mac;
 
-  int time;
+  DateTime time;
 
   int pulse;
 

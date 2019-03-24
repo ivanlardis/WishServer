@@ -42,7 +42,7 @@ class PulseMetricController extends ResourceController {
         ..values.min =body['pulse'] as int
         ..values.max = body['pulse'] as int
         ..values.pulse = body['pulse'] as int
-        ..values.time = DateTime.now().millisecondsSinceEpoch
+        ..values.time = DateTime.now()
         ..canModifyAllInstances = true;
       final insertedHero = await query.insert();
       return Response.ok(insertedHero);
@@ -69,7 +69,7 @@ class PulseMetricController extends ResourceController {
         ..values.max = max
         ..values.mac = body['mac'] as String
         ..values.pulse = body['pulse'] as int
-        ..values.time = DateTime.now().millisecondsSinceEpoch
+        ..values.time = DateTime.now()
         ..canModifyAllInstances = true;
 
 

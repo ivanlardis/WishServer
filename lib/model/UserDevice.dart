@@ -27,7 +27,7 @@ class _UserDevice {
 
   String name;
 
-  int changed;
+  DateTime changed;
 
 }
 

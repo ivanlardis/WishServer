@@ -22,7 +22,7 @@ class OtBoxOverView extends ResourceController {
     for (int i = 0; i < userDevice.length; i++) {
       var device = userDevice[i];
       var overview = OverView(
-          start: device.changed,
+          start: device.changed.millisecondsSinceEpoch,
           userName: device.name,
           min: 0,
           max: 0,

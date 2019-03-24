@@ -1,4 +1,5 @@
 import 'package:aqueduct/aqueduct.dart';
+import 'package:wish_server/model/PulseMetric.dart';
 import 'package:wish_server/model/UserDevice.dart';
 import 'package:wish_server/model/Wish.dart';
 
@@ -37,25 +38,42 @@ class UserDeviceController extends ResourceController {
       final query = Query<UserDevice>(context)
         ..values.mac = body['mac'] as String
         ..values.name = body['name'] as String
-        ..values.changed = 32
+        ..values.changed = DateTime.now()
         ..values.active = body['active'] as bool
         ..canModifyAllInstances = true;
       final insertedHero = await query.insert();
+
+
+      var query3 = Query<PulseMetric>(context)
+        ..where((u) => u.mac).equalTo( body['mac'] as String);
+
+      int usersDeleted32 = await query3.delete();
+
+
       return Response.ok(insertedHero);
     } else {
 
 //
+    print(DateTime.now().millisecondsSinceEpoch);
 //
       final query = Query<UserDevice>(context)
         ..where((h) => h.id).equalTo(wish.id)
         ..values.id = wish.id
         ..values.mac = body['mac'] as String
         ..values.name = body['name'] as String
-        ..values.changed = 23
+        ..values.changed =  DateTime.now()
         ..values.active =body['active'] as bool;
 
 
       final insertedHero = await query.update();
+
+
+
+      var query3 = Query<PulseMetric>(context)
+        ..where((u) => u.mac).equalTo( body['mac'] as String);
+
+      int usersDeleted32 = await query3.delete();
+
       return Response.ok(insertedHero);
     }
   }
